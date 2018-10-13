@@ -22,12 +22,27 @@ const functions = require('firebase-functions');
 // Instantiate the Dialogflow client.
 const app = dialogflow({debug: true});
 
-// Handle the Dialogflow intent named 'favorite color'.
-// The intent collects a parameter named 'color'.
-app.intent('favorite color', (conv, {color}) => {
-    const luckyNumber = color.length;
+// Handle the Dialogflow intent named 'caretaker name'.
+// The intent collects a parameter named 'name'.
+app.intent('caretaker name', (conv, {name}) => {
+    const luckyNumber = name.length;
     // Respond with the user's lucky number and end the conversation.
     conv.close('Your lucky number is ' + luckyNumber);
+});
+
+// Handle the follow-up Dialogflow intent named 'caretaker name-repeat'.
+// The intent collects a parameter named 'name'.
+app.intent('caretaker name - repeat', (conv, {$name}) => {
+    const luckyNumber = name.length;
+    // Respond with the user's lucky number and end the conversation.
+    conv.close('Your caretaker\'s name is ' + $name);
+});
+
+// Handle the Dialogflow intent named 'easter-egg'.
+// The intent collects a parameter named 'number'.
+app.intent('easter-egg', (conv, {number}) => {
+    // Respond with the user's lucky number and end the conversation.
+    conv.close('Your new number is ' + number*113);
 });
 
 // Set the DialogflowApp object to handle the HTTPS POST request.
