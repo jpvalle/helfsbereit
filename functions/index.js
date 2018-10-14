@@ -53,16 +53,18 @@
 // Set the DialogflowApp object to handle the HTTPS POST request.
   exports.dialogflowFirebaseFulfillment = functions.https.onRequest(app);
 
-app.intent('userName', (conv, =>{
-  const userName= conv.user.storage.userName;
-  if (!memory) {
-    // Asks the user's permission to know their name, for personalization.
-      conv.ask(new Permission({
-        context: 'Hi there, what\'s your name?',
-        permissions: 'NAME',
+// Handle the Dialogflow intent named 'Default Welcome Intent'.
+  app.intent('userName', (conv) => {
+    const name = conv.user.storage.userName;
+    if(name){
+      conv.ask(new SimpleResponse({
+        speech: 'Howdy there '+name+'!',
+        text: 'Howdy there '+name+'!',
       }));
-  } else {
-    conv.ask(`Hello there ${name}`);
-  }
-
-}));
+    }else{
+      conv.ask(new SimpleResponse({
+        speech: 'I don\'t know what to call you!',
+        text: 'I don\'t know what to call you!',
+      }));
+    }
+  });
