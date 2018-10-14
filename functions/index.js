@@ -53,5 +53,23 @@ app.intent('newName', (conv,{newName}) => {
   conv.close('Ok, I will call you ' + newName + ' now.');
   });
 
+// Handle the Dialogflow intent named 'confirm name yes'
+app.intent('confirm name yes', (conv, {findName}) => {
+    var data = {
+      name: findName
+    }
+    // Search collection "residents" for people with the name 'findName'
+    var resRef = db.collection('residents');
+    var queryRef = resRef.where('name', '==', findName);
+    if(queryRef)
+    {
+      conv.close('Found ' + findName + ': ' + queryRef);
+    }
+    else
+    {
+      conv.close('I am sorry, I could not find a person named ' + findName);
+    }
+    });
+
 // Set the DialogflowApp object to handle the HTTPS POST request.
 exports.dialogflowFirebaseFulfillment = functions.https.onRequest(app);
