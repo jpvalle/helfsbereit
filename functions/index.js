@@ -72,7 +72,7 @@ var db = admin.firestore();
         }
       })
       .catch(err => {
-        console.log('Error getting document', err);
+        conv.close('Error getting document ' + err);
       });
     });
 
