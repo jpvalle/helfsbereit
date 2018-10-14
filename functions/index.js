@@ -43,14 +43,14 @@ app.intent('easter-egg', (conv, {number}) => {
     conv.close('Your new number is ' + number*113);
     });
 
-// Handle the Dialogflow intent named 'userName'.
-app.intent('userName', (conv,{username}) => {
+// Handle the Dialogflow intent named 'newName'.
+app.intent('newName', (conv,{newName}) => {
   var data = {
-    name: username
+    name: newName
   }
   // Add a new document in collection "residents" with ID 'seniors'
   var setDoc = db.collection('residents').doc('seniors').set(data);
-  conv.close('Hello ' + username);
+  conv.close('Ok, I will call you ' + newName + ' now.');
   });
 
 // Set the DialogflowApp object to handle the HTTPS POST request.
