@@ -69,11 +69,12 @@ var db = admin.firestore();
           conv.close('Sorry, I couldn\'t find that person.');
         } else {
           conv.close('Yes, here he is: ' + doc.data());
+        }
       })
       .catch(err => {
         console.log('Error getting document', err);
       });
-  });
+    });
 
 // Handle the Dialogflow intent named 'confirm name yes'
 app.intent('confirm name yes', (conv, {findName}) => {
@@ -99,7 +100,7 @@ app.intent('Default Welcome Intent', (conv) => {
 
 app.intent('get the nurse', (conv) => {
   const needs = conv.parameters['need'].toLowerCase();
-  conv.ask(`It seems that you're asking for `+needs);
+  conv.ask('It seems that you are asking for '+needs);
 });
 
 app.intent('get the nurse - yes', (conv) => {
@@ -135,4 +136,4 @@ exports.portal = functions.https.onRequest(portal);
 */
 
 // Set the DialogflowApp object to handle the HTTPS POST request.
-  exports.dialogflowFirebaseFulfillment = functions.https.onRequest(app);
+exports.dialogflowFirebaseFulfillment = functions.https.onRequest(app);
