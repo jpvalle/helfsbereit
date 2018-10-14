@@ -59,6 +59,22 @@ var db = admin.firestore();
     conv.close('Ok, I will call you ' + newName + ' now.');
   });
 
+// Handle the Dialogflow intent named 'GetName'.
+  app.intent('GetName', (conv) => {
+    // Get reference to document in collection "residents" with ID 'seniors'
+    var getRef = db.collection('residents').doc('seniors');
+    var getDoc = getRef.get()
+      .then(doc => {
+        if (!doc.exists) {
+          conv.close('Sorry, I couldn\'t find that person.');
+        } else {
+          conv.close('Yes, here he is: ' + doc.data());
+      })
+      .catch(err => {
+        console.log('Error getting document', err);
+      });
+  });
+
 // Handle the Dialogflow intent named 'confirm name yes'
 app.intent('confirm name yes', (conv, {findName}) => {
     var data = {
