@@ -1,49 +1,68 @@
 // Copyright 2018, Google, Inc.
-// Licensed under the Apache License, Version 2.0 (the 'License');
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-//    http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an 'AS IS' BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
+  // Licensed under the Apache License, Version 2.0 (the 'License');
+  // you may not use this file except in compliance with the License.
+  // You may obtain a copy of the License at
+  //
+  //    http://www.apache.org/licenses/LICENSE-2.0
+  //
+  // Unless required by applicable law or agreed to in writing, software
+  // distributed under the License is distributed on an 'AS IS' BASIS,
+  // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  // See the License for the specific language governing permissions and
+  // limitations under the License.
 
 'use strict';
 
-// Import the Dialogflow module from the Actions on Google client library.
-const {dialogflow} = require('actions-on-google');
+// Import the Dialogflow module and response creation dependencies from the 
+// Actions on Google client library.
+  const {
+    dialogflow,
+      Permission,
+      Suggestions,
+  } = require('actions-on-google');
 
 // Import the firebase-functions package for deployment.
-const functions = require('firebase-functions');
+  const functions = require('firebase-functions');
 
 // Instantiate the Dialogflow client.
-const app = dialogflow({debug: true});
+  const app = dialogflow({debug: true});
 
 // Handle the Dialogflow intent named 'caretaker name'.
-// The intent collects a parameter named 'name'.
-app.intent('caretaker name', (conv, {name}) => {
+  // The intent collects a parameter named 'name'.
+  app.intent('caretaker name', (conv, {name}) => {
     const luckyNumber = name.length;
     // Respond with the user's lucky number and end the conversation.
-    conv.close('Your lucky number is ' + luckyNumber);
-});
+      conv.close('Your lucky number is ' + luckyNumber);
+  });
 
 // Handle the follow-up Dialogflow intent named 'caretaker name-repeat'.
-// The intent collects a parameter named 'name'.
-app.intent('caretaker name - repeat', (conv, {$name}) => {
+  // The intent collects a parameter named 'name'.
+  app.intent('caretaker name - repeat', (conv, {$name}) => {
     const luckyNumber = name.length;
     // Respond with the user's lucky number and end the conversation.
-    conv.close('Your caretaker\'s name is ' + $name);
-});
+      conv.close('Your caretaker\'s name is ' + $name);
+  });
 
 // Handle the Dialogflow intent named 'easter-egg'.
-// The intent collects a parameter named 'number'.
-app.intent('easter-egg', (conv, {number}) => {
+  // The intent collects a parameter named 'number'.
+  app.intent('easter-egg', (conv, {number}) => {
     // Respond with the user's lucky number and end the conversation.
-    conv.close('Your new number is ' + number*113);
-});
+      conv.close('Your new number is ' + number*113);
+  });
 
 // Set the DialogflowApp object to handle the HTTPS POST request.
-exports.dialogflowFirebaseFulfillment = functions.https.onRequest(app);
+  exports.dialogflowFirebaseFulfillment = functions.https.onRequest(app);
+
+app.intent('userName', (conv, =>{
+  const userName= conv.user.storage.userName;
+  if (!memory) {
+    // Asks the user's permission to know their name, for personalization.
+      conv.ask(new Permission({
+        context: 'Hi there, what\'s your name?',
+        permissions: 'NAME',
+      }));
+  } else {
+    conv.ask(`Hello there ${name}`);
+  }
+
+}));
